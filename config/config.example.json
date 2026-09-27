@@ -1,0 +1,64 @@
+{
+  "exchange": "polymarket",
+  "snapshot_interval_ms": 1000,
+  "order_book_depth": 20,
+  "market_refresh_interval_ms": 300000,
+  "status_interval_ms": 5000,
+  "event_queue_capacity": 262144,
+  "block_when_queue_full": true,
+  "log_level": "info",
+  "endpoints": {
+    "gamma_base_url": "https://gamma-api.polymarket.com",
+    "clob_base_url": "https://clob.polymarket.com",
+    "market_ws_url": "wss://ws-subscriptions-clob.polymarket.com/ws/market"
+  },
+  "subscribe": {
+    "top_markets_by_volume": 25,
+    "max_tokens": 400,
+    "min_reported_liquidity": 0.0
+  },
+  "reconnect": {
+    "initial_backoff_ms": 500,
+    "max_backoff_ms": 30000,
+    "backoff_multiplier": 2.0,
+    "jitter_fraction": 0.25,
+    "max_attempts": 0
+  },
+  "health": {
+    "stale_after_ms": 60000,
+    "ping_interval_ms": 10000,
+    "read_timeout_ms": 40000,
+    "resync_cooldown_ms": 2000
+  },
+  "storage": {
+    "root_directory": "./data",
+    "raw_events": {
+      "enabled": true,
+      "format": "jsonl",
+      "compression": "zstd",
+      "compression_level": 3,
+      "rotation_minutes": 60,
+      "max_file_bytes": 536870912,
+      "flush_interval_ms": 1000
+    },
+    "parquet": {
+      "enabled": true,
+      "compression": "zstd",
+      "compression_level": 3,
+      "snapshot_interval_ms": 1000,
+      "batch_rows": 10000,
+      "flush_interval_seconds": 10,
+      "partition_by_hour": true
+    },
+    "duckdb": {
+      "enabled": true,
+      "path": "db/market_data.duckdb",
+      "create_views": true
+    },
+    "write_csv_snapshots": false,
+    "raw_queue_capacity": 262144,
+    "parquet_queue_capacity": 262144,
+    "block_when_queue_full": true,
+    "queue_warn_fraction": 0.8
+  }
+}
